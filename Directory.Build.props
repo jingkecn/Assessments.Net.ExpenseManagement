@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <!-- Custom Properties -->
+    <Company>Assessments</Company>
+    <Product>ExpenseManagement</Product>
+    <!-- Redefine MSBuild Properties -->
+    <AssemblyName>$(Company).$(Product).$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(Company).$(Product).$(MSBuildProjectName)</RootNamespace>
+  </PropertyGroup>
+</Project>
