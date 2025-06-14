@@ -1,0 +1,22 @@
+services:
+  command.api:
+    image: ${DOCKER_REGISTRY-}commandapi
+    container_name: command.api
+    build:
+      context: .
+      dockerfile: src/Command.Api/Dockerfile
+    depends_on:
+      - database
+
+  query.api:
+    image: ${DOCKER_REGISTRY-}queryapi
+    container_name: query.api
+    build:
+      context: .
+      dockerfile: src/Query.Api/Dockerfile
+    depends_on:
+      - database
+
+  database:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: database
