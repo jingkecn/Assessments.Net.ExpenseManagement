@@ -2,6 +2,7 @@ Assessment: Design an Expense Management System
 ===============================================
 
 - [Scenario](#scenario)
+- [Design Flow](#design-flow)
 
 Scenario
 --------
@@ -30,3 +31,22 @@ Given these requirements, a microservices architecture is a natural fit. It allo
 - Faster iteration cycles for teams working on different parts of the system
 
 As a result, Fake, Inc. has chosen a microservices approach to build a scalable, maintainable, and adaptable Expense Management platform.
+
+Design Flow
+-----------
+
+```mermaid
+flowchart LR
+    Step1["Analyze domain"]
+    Step2["Define bounded contexts"]
+    Step3["Define entities, aggregates, and services"]
+    Step4["Identify microservices"]
+
+    Step1 --> Step2 --> Step3 --> Step4
+```
+
+| Exercise                                                                            | Input                             | Output                                                                                        |
+| ----------------------------------------------------------------------------------- | --------------------------------- | --------------------------------------------------------------------------------------------- |
+| [Strategic DDD: Domain Analysis](docs/1.Strategic%20DDD%20-%20Domain%20Analysis.md) | Scenario                          | Subdomains -> Bounded Contexts with Integration -> High-Level Architecture                    |
+| [Tactical DDD: Domain Modeling](docs/2.Tactical%20DDD-%20Domain%20Modeling.md)      | Bounded Contexts with Integration | Breakdown Patterns: Aggregate Roots, Entities, Value Objects, Domain Behaviors, Domain Events |
+| [Deep Dive: Expense Management](docs/3.Deep%20Dive%20-%20Expense%20Management.md)   | Breakdown Patterns                | Data Model with Dependencies for Expense Management Service                                   |
