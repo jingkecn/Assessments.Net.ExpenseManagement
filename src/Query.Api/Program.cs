@@ -1,4 +1,15 @@
+using Assessments.ExpenseManagement.Infrastructure;
+using Assessments.ExpenseManagement.Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Docker Compose mode.
+builder.Services.AddDbContext<ExpenseManagementContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("expense-management-db")));
+
+// .NET Aspire mode.
+// builder.AddSqlServerDbContext<ExpenseManagementContext>("expense-management-db");
 
 builder.AddServiceDefaults();
 
@@ -19,6 +30,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.Services.InitializeInfrastructure();
 }
 
 app.UseHttpsRedirection();
