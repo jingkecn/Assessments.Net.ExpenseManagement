@@ -13,7 +13,7 @@ public sealed class Employee : Entity, IAggregateRoot
     [Required] [MaxLength(50)] public string FirstName { get; private init; } = null!;
     [Required] [MaxLength(50)] public string LastName { get; private init; } = null!;
     [Required] public Guid CurrencyId { get; private set; }
-    public Currency? Currency { get; private set; }
+    public Currency? Currency { get; internal set; }
 
     public static Employee Create(string firstName, string lastName, Currency currency, bool isTransient = false) =>
         Create(isTransient ? Guid.Empty : Guid.NewGuid(), firstName, lastName, currency);

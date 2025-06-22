@@ -7,5 +7,11 @@ namespace Assessments.ExpenseManagement.Infrastructure.Configurations;
 
 public sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employee>
 {
-    public void Configure(EntityTypeBuilder<Employee> builder) => builder.HasData(EmployeePresets.PredefinedEmployees);
+    public void Configure(EntityTypeBuilder<Employee> builder)
+    {
+        builder.HasOne(e => e.Currency)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+        builder.HasData(EmployeePresets.PredefinedEmployees);
+    }
 }

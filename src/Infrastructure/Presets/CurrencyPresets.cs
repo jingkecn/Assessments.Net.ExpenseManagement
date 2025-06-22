@@ -4,7 +4,7 @@ using Assessments.ExpenseManagement.Domain.Models;
 namespace Assessments.ExpenseManagement.Infrastructure.Presets;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-internal static class CurrencyPresets
+public static class CurrencyPresets
 {
     public static readonly Currency CNY = Currency.Create(
         Guid.Parse("2a20ef19-6a03-48ac-9b42-6a0b2cdb7c80"), "CNY", "Chinese Yuan", "¥");

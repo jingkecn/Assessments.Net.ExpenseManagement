@@ -27,7 +27,7 @@ public partial class DomainException
             CompositeFormat.Parse(ErrorMessages.ExpenseInvalidCurrencyForEmployee),
             expenseCurrencyCode,
             employee.Id,
-            employee.Currency.Code)) { StatusCode = HttpStatusCode.PreconditionFailed };
+            employee.Currency!.Code)) { StatusCode = HttpStatusCode.PreconditionFailed };
 
     public static DomainException ExpenseInvalidStatusToPerformAction(
         Status expenseStatus,
@@ -45,7 +45,7 @@ public partial class DomainException
         };
 
     public static DomainException ExpenseNotFoundByIdForEmployee(Guid expenseId, Guid employeeId) =>
-        new(string.Format(null, CompositeFormat.Parse(ErrorMessages.ExpenseNotFound), expenseId, employeeId))
+        new(string.Format(null, CompositeFormat.Parse(ErrorMessages.ExpenseNotFoundForEmployee), expenseId, employeeId))
         {
             StatusCode = HttpStatusCode.NotFound
         };

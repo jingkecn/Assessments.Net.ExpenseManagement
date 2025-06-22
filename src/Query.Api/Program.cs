@@ -1,11 +1,14 @@
+using Assessments.ExpenseManagement.Application.Extensions;
 using Assessments.ExpenseManagement.Infrastructure;
 using Assessments.ExpenseManagement.Infrastructure.Extensions;
+using Assessments.ExpenseManagement.Query.Api.Endpoints;
+using Assessments.ExpenseManagement.Query.Api.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Docker Compose mode.
-builder.Services.AddDbContext<ExpenseManagementContext>(options =>
+builder.Services.AddDbContext<ExpenseDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("expense-management-db")));
 
 // .NET Aspire mode.
@@ -19,6 +22,14 @@ builder.Services.AddOpenApi();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
+
+// Add infrastructure services.
+builder.Services.AddInfrastructure();
+
+// Add application services.
+builder.Services.AddApplication();
+
+builder.Services.AddExceptionHandler<ExceptionHandler>().AddProblemDetails();
 
 var app = builder.Build();
 
@@ -34,28 +45,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseExceptionHandler();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-            new WeatherForecast
-            (
-                DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                Random.Shared.Next(-20, 55),
-                summaries[Random.Shared.Next(summaries.Length)]
-            ))
-        .ToArray();
-    return forecast;
-}).WithName("GetWeatherForecast");
+app.MapCategoryQueryEndpoints();
+app.MapCurrencyQueryEndpoints();
+app.MapEmployeeQueryEndpoints();
+app.MapEmployeeExpenseQueryEndpoints();
+app.MapExpenseQueryEndpoints();
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

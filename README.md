@@ -4,11 +4,14 @@ Assessment: Design an Expense Management System
 - [Scenario](#scenario)
 - [Quick Start](#quick-start)
 - [Design Flow](#design-flow)
+- [Projects](#projects)
 
-| Prerequisites | Recommended                                                                   | Alternative     |
-| ------------- | ----------------------------------------------------------------------------- | --------------- |
-| IDE           | Visual Studio 2022 with **Solution File Persistence Model (`.slnx`)** enabled | JetBrains Rider |
-| Environment   | Docker                                                                        |                 |
+| Prerequisites | Recommended            | Alternative     |
+| ------------- | ---------------------- | --------------- |
+| IDE           | Visual Studio 2022[^1] | JetBrains Rider |
+| Environment   | Docker                 |                 |
+
+[^1]: The option [**Solution File Persistence Model**](https://devblogs.microsoft.com/visualstudio/new-simpler-solution-file-format/) must be enabled to support `.slnx`.
 
 Scenario
 --------
@@ -79,3 +82,58 @@ flowchart LR
 | [Clean Architecture](docs/5.Clean%20Architecture.md)                               | Use cases, business rules, and other key concepts.                        | Separates the business logic from the technical decisions..                                    |
 | [Design Patterns](docs/6.Design%20Patterns.md)                                     | Common problems                                                           | Common approaches to solving similar problems.                                                 |
 | [Testing](docs/7.Testing.md)                                                       | [Test Driven Design](https://deviq.com/practices/test-driven-development) | Definition and confirmation upon the software's behavior.                                      |
+
+Projects
+--------
+
+```mermaid
+flowchart LR
+    subgraph .aspire
+        Starter.AppHost
+        Starter.ServiceDefaults
+    end
+
+    subgraph .docker
+        DockerCompose["docker-compose"]
+    end
+
+    subgraph src
+        subgraph Core
+            Domain
+            Application
+        end
+
+        subgraph External
+            Infrastructure
+        end
+
+        Command.Api
+        Query.Api
+    end
+
+    subgraph tests
+        ArchitectureTests
+        FunctionalTests.Command.Api
+        FunctionalTests.Query.Api
+        IntegrationTests
+        UnitTests
+    end
+
+    Application ---> Domain
+    Infrastructure ---> Domain
+
+    Command.Api ---> Application
+    Command.Api ---> Infrastructure
+    Command.Api ---> Starter.ServiceDefaults
+
+    Query.Api ---> Application
+    Query.Api ---> Infrastructure
+    Query.Api ---> Starter.ServiceDefaults
+
+    ArchitectureTests ---> Command.Api
+    ArchitectureTests ---> Query.Api
+    FunctionalTests.Command.Api ---> Command.Api
+    FunctionalTests.Query.Api ---> Query.Api
+    IntegrationTests ---> Infrastructure
+    UnitTests ---> Application
+```
